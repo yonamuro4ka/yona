@@ -1,0 +1,31 @@
+name: Build shzq
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Theos
+        run: |
+          bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/master/bin/install-theos)"
+      - name: Install Theos Jailed dependencies
+        run: |
+          brew install ldid dpkg
+      - name: Build .tipa
+        run: |
+          export THEOS=$HOME/theos
+          make package FINALPACKAGE=1 ARCHS=arm64
+      - name: Upload .tipa artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: shzq
+          path: packages/*.tipa
+          retention-days: 30
