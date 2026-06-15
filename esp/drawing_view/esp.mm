@@ -1152,7 +1152,7 @@ struct UnityString32 { uint16_t chars[32]; };
                         } else {
                             distLbl = [[UILabel alloc] init];
                             distLbl.userInteractionEnabled = NO;
-                            distLbl.font = [UIFont boldSystemFontOfSize:11 weight:UIFontWeightBold];
+                            distLbl.font = [UIFont systemFontOfSize:11 weight:UIFontWeightBold];
                             distLbl.textColor = [UIColor whiteColor];
                             [self addSubview:distLbl];
                             [self.distanceLabelPool addObject:distLbl];
