@@ -195,6 +195,9 @@ extern volatile bool esp_screenshot_safe;
     UIView *_aimContainer;
     UIView *_visualContainer;
     UIView *_otherContainer;
+    UIView *_aimContent;
+    UIView *_visualContent;
+    UIView *_otherContent;
     UIView *_innerContent;
     NSMutableArray<UILabel *> *_tabLabels;
 
@@ -231,6 +234,7 @@ extern volatile bool esp_screenshot_safe;
     CAShapeLayer *_skeletonCheckmark;
     CAShapeLayer *_screenshotSafeCheckmark;
     CAShapeLayer *_triggerbotCheckmark;
+    CAShapeLayer *_aimbotCheckmark;
     CAShapeLayer *_aimbotFovVisibleCheckmark;
     CAShapeLayer *_visibleCheckCheckmark;
     CAShapeLayer *_shootingCheckCheckmark;
