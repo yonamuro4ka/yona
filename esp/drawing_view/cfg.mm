@@ -74,11 +74,6 @@ void cfg_create(NSString *name) {
     dict[@(OBF("esp_platform_enabled"))] = @(esp_platform_enabled);
     dict[@(OBF("esp_avatar_enabled"))] = @(esp_avatar_enabled);
     
-    dict[@(OBF("viewmodel_enabled"))] = @(viewmodel_enabled);
-    dict[@(OBF("viewmodel_x"))] = @(viewmodel_x);
-    dict[@(OBF("viewmodel_y"))] = @(viewmodel_y);
-    dict[@(OBF("viewmodel_z"))] = @(viewmodel_z);
-
     dict[@(OBF("esp_auto_load"))] = @(esp_auto_load);
     dict[@(OBF("esp_screenshot_safe"))] = @(esp_screenshot_safe);
 
@@ -135,11 +130,6 @@ void cfg_load(NSString *name) {
     if (dict[@(OBF("esp_weapon_icon_enabled"))]) esp_weapon_icon_enabled = [dict[@(OBF("esp_weapon_icon_enabled"))] boolValue];
     if (dict[@(OBF("esp_platform_enabled"))]) esp_platform_enabled = [dict[@(OBF("esp_platform_enabled"))] boolValue];
     if (dict[@(OBF("esp_avatar_enabled"))]) esp_avatar_enabled = [dict[@(OBF("esp_avatar_enabled"))] boolValue];
-    
-    if (dict[@(OBF("viewmodel_enabled"))]) viewmodel_enabled = [dict[@(OBF("viewmodel_enabled"))] boolValue];
-    if (dict[@(OBF("viewmodel_x"))]) viewmodel_x = [dict[@(OBF("viewmodel_x"))] floatValue];
-    if (dict[@(OBF("viewmodel_y"))]) viewmodel_y = [dict[@(OBF("viewmodel_y"))] floatValue];
-    if (dict[@(OBF("viewmodel_z"))]) viewmodel_z = [dict[@(OBF("viewmodel_z"))] floatValue];
     
     if (dict[@(OBF("esp_auto_load"))]) esp_auto_load = [dict[@(OBF("esp_auto_load"))] boolValue];
     if (dict[@(OBF("esp_screenshot_safe"))]) esp_screenshot_safe = [dict[@(OBF("esp_screenshot_safe"))] boolValue];

@@ -114,11 +114,6 @@ volatile bool esp_weapon_icon_enabled = false;
 volatile bool esp_platform_enabled = false;
 volatile bool esp_avatar_enabled   = false;
 
-volatile bool  viewmodel_enabled  = false;
-volatile float viewmodel_x        = 0.0f;
-volatile float viewmodel_y        = 0.0f;
-volatile float viewmodel_z        = 0.0f;
-
 volatile bool esp_auto_load = false;
 NSString *esp_selected_config = nil;
 
@@ -1365,19 +1360,6 @@ static BOOL IsPlayerVisible(mach_vm_address_t player, task_t task) {
 }
 
 
-- (void)applyViewmodelSettings:(mach_vm_address_t)localPlayer task:(task_t)task {
-    if (!localPlayer || localPlayer < 0x1000000) return;
-
-    if (viewmodel_enabled) {
-        mach_vm_address_t armsController = Read<mach_vm_address_t>(localPlayer + 0xA0, task);
-        if (armsController && armsController > 0x1000000) {
-            Vector3 offset = {viewmodel_x / -10.0f, viewmodel_y / -10.0f, viewmodel_z / -10.0f};
-            Write<Vector3>(armsController + 0xE8, offset, task);
-        }
-    }
-}
-
-
 - (void)runAimbot:(mach_vm_address_t)localPlayer
           players:(mach_vm_address_t)playersList
             count:(int)count
@@ -1386,8 +1368,6 @@ static BOOL IsPlayerVisible(mach_vm_address_t player, task_t task) {
             width:(CGFloat)w
            height:(CGFloat)h
        viewMatrix:(SO2_Matrix)viewMatrix {
-
-    [self applyViewmodelSettings:localPlayer task:so2_task];
 
     [CATransaction begin];
     [CATransaction setDisableActions:YES];

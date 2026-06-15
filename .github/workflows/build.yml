@@ -16,13 +16,17 @@ jobs:
       - name: Install Theos
         run: |
           bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/master/bin/install-theos)"
+
       - name: Install Theos Jailed dependencies
         run: |
           brew install ldid dpkg
+
       - name: Build .tipa
         run: |
           export THEOS=$HOME/theos
-          make package FINALPACKAGE=1 ARCHS=arm64
+          export THEOS_MAKE_PATH=$HOME/theos/makefiles
+          make package FINALPACKAGE=1 ARCHS=arm64 THEOS=$HOME/theos
+
       - name: Upload .tipa artifact
         uses: actions/upload-artifact@v4
         with:

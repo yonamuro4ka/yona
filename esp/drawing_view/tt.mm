@@ -230,12 +230,6 @@ extern volatile bool esp_screenshot_safe;
     CAShapeLayer *_avatarCheckmark;
     CAShapeLayer *_skeletonCheckmark;
     CAShapeLayer *_screenshotSafeCheckmark;
-
-    UIView *_aimContent;
-    UIView *_visualContent;
-    UIView *_otherContent;
-
-    CAShapeLayer *_aimbotCheckmark;
     CAShapeLayer *_triggerbotCheckmark;
     CAShapeLayer *_aimbotFovVisibleCheckmark;
     CAShapeLayer *_visibleCheckCheckmark;
@@ -253,14 +247,6 @@ extern volatile bool esp_screenshot_safe;
     CustomSliderView *_fovSlider;
     CustomSliderView *_smoothSlider;
     CustomSliderView *_triggerDelaySlider;
-    
-    CAShapeLayer *_viewmodelCheckmark;
-    CustomSliderView *_viewmodelXSlider;
-    UILabel *_viewmodelXValueLabel;
-    CustomSliderView *_viewmodelYSlider;
-    UILabel *_viewmodelYValueLabel;
-    CustomSliderView *_viewmodelZSlider;
-    UILabel *_viewmodelZValueLabel;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -460,17 +446,6 @@ extern volatile bool esp_screenshot_safe;
         yOffset += 32;
         _avatarCheckmark = [self addToggle:@(OBF("Avatars")) atY:yOffset action:@selector(avatarTapped) enabled:esp_avatar_enabled];
         yOffset += 32;
-
-        [self addSectionHeader:@(OBF("VIEWMODEL")) atY:yOffset];
-        yOffset += 26;
-        _viewmodelCheckmark = [self addToggle:@(OBF("Viewmodel")) atY:yOffset action:@selector(viewmodelTapped) enabled:viewmodel_enabled];
-        yOffset += 37;
-        [self addSectionHeader:@(OBF("View X")) atY:yOffset]; yOffset += 26;
-        [self addViewmodelXSliderAtY:yOffset]; yOffset += 45;
-        [self addSectionHeader:@(OBF("View Y")) atY:yOffset]; yOffset += 26;
-        [self addViewmodelYSliderAtY:yOffset]; yOffset += 45;
-        [self addSectionHeader:@(OBF("View Z")) atY:yOffset]; yOffset += 26;
-        [self addViewmodelZSliderAtY:yOffset]; yOffset += 45;
 
         CGRect visualContentFrame = _visualContent.frame;
         visualContentFrame.size.height = yOffset + 10;
@@ -713,70 +688,6 @@ extern volatile bool esp_screenshot_safe;
     [_innerContent addSubview:_triggerDelaySlider];
 }
 
-
-- (void)addViewmodelXSliderAtY:(CGFloat)y {
-    CGFloat w = _innerContent.bounds.size.width;
-    _viewmodelXValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(w - 60, y - 24, 50, 20)];
-    _viewmodelXValueLabel.textColor = [UIColor whiteColor];
-    _viewmodelXValueLabel.font = [UIFont systemFontOfSize:11];
-    _viewmodelXValueLabel.textAlignment = NSTextAlignmentRight;
-    _viewmodelXValueLabel.text = [NSString stringWithFormat:@"%.1f", viewmodel_x];
-    [_innerContent addSubview:_viewmodelXValueLabel];
-
-    _viewmodelXSlider = [[CustomSliderView alloc] initWithFrame:CGRectMake(15, y, w - 30, 30) min:-10.0f max:10.0f current:viewmodel_x];
-    __weak MenuView *weakSelf = self;
-    _viewmodelXSlider.valueChanged = ^(float newValue) {
-        __strong MenuView *strongSelf = weakSelf;
-        if (strongSelf) {
-            viewmodel_x = newValue;
-            strongSelf->_viewmodelXValueLabel.text = [NSString stringWithFormat:@"%.1f", newValue];
-        }
-    };
-    [_innerContent addSubview:_viewmodelXSlider];
-}
-
-- (void)addViewmodelYSliderAtY:(CGFloat)y {
-    CGFloat w = _innerContent.bounds.size.width;
-    _viewmodelYValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(w - 60, y - 24, 50, 20)];
-    _viewmodelYValueLabel.textColor = [UIColor whiteColor];
-    _viewmodelYValueLabel.font = [UIFont systemFontOfSize:11];
-    _viewmodelYValueLabel.textAlignment = NSTextAlignmentRight;
-    _viewmodelYValueLabel.text = [NSString stringWithFormat:@"%.1f", viewmodel_y];
-    [_innerContent addSubview:_viewmodelYValueLabel];
-
-    _viewmodelYSlider = [[CustomSliderView alloc] initWithFrame:CGRectMake(15, y, w - 30, 30) min:-10.0f max:10.0f current:viewmodel_y];
-    __weak MenuView *weakSelf = self;
-    _viewmodelYSlider.valueChanged = ^(float newValue) {
-        __strong MenuView *strongSelf = weakSelf;
-        if (strongSelf) {
-            viewmodel_y = newValue;
-            strongSelf->_viewmodelYValueLabel.text = [NSString stringWithFormat:@"%.1f", newValue];
-        }
-    };
-    [_innerContent addSubview:_viewmodelYSlider];
-}
-
-- (void)addViewmodelZSliderAtY:(CGFloat)y {
-    CGFloat w = _innerContent.bounds.size.width;
-    _viewmodelZValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(w - 60, y - 24, 50, 20)];
-    _viewmodelZValueLabel.textColor = [UIColor whiteColor];
-    _viewmodelZValueLabel.font = [UIFont systemFontOfSize:11];
-    _viewmodelZValueLabel.textAlignment = NSTextAlignmentRight;
-    _viewmodelZValueLabel.text = [NSString stringWithFormat:@"%.1f", viewmodel_z];
-    [_innerContent addSubview:_viewmodelZValueLabel];
-
-    _viewmodelZSlider = [[CustomSliderView alloc] initWithFrame:CGRectMake(15, y, w - 30, 30) min:-10.0f max:10.0f current:viewmodel_z];
-    __weak MenuView *weakSelf = self;
-    _viewmodelZSlider.valueChanged = ^(float newValue) {
-        __strong MenuView *strongSelf = weakSelf;
-        if (strongSelf) {
-            viewmodel_z = newValue;
-            strongSelf->_viewmodelZValueLabel.text = [NSString stringWithFormat:@"%.1f", newValue];
-        }
-    };
-    [_innerContent addSubview:_viewmodelZSlider];
-}
-
 - (void)refreshConfigList {
     // Config tab removed
 }
@@ -818,13 +729,7 @@ static __attribute__((unused)) std::string readUnityString(uintptr_t str_ptr, ta
 - (void)visibleCheckTapped  { aimbot_visible_check  = !aimbot_visible_check;  [self animateCheckmark:_visibleCheckCheckmark  show:aimbot_visible_check];  }
 - (void)shootingCheckTapped { aimbot_shooting_check = !aimbot_shooting_check; [self animateCheckmark:_shootingCheckCheckmark show:aimbot_shooting_check]; }
 - (void)knifeBotTapped      { aimbot_knife_bot      = !aimbot_knife_bot;      [self animateCheckmark:_knifeBotCheckmark      show:aimbot_knife_bot];      }
-- (void)rcsTapped           { }  // rcs slider removed with player tab
-
-
-- (void)viewmodelTapped {
-    viewmodel_enabled = !viewmodel_enabled;
-    [self animateCheckmark:_viewmodelCheckmark show:viewmodel_enabled];
-}
+- (void)rcsTapped           { }
 
 
 - (void)aimbotTapped {

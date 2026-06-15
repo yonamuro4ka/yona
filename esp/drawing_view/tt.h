@@ -48,10 +48,5 @@ extern volatile bool esp_weapon_icon_enabled;
 extern volatile bool esp_platform_enabled;
 extern volatile bool esp_avatar_enabled;
 
-extern volatile bool  viewmodel_enabled;
-extern volatile float viewmodel_x;
-extern volatile float viewmodel_y;
-extern volatile float viewmodel_z;
-
 extern volatile bool esp_auto_load;
 extern NSString *esp_selected_config;
