@@ -263,6 +263,12 @@ struct ESPBoxData {
     self.menuView.center = CGPointMake(frame.size.width / 2, frame.size.height / 2);
     [self addSubview:self.menuView];
 
+    // Toggle menu with three-finger double tap (open/close)
+    UITapGestureRecognizer *menuToggleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleMenu)];
+    menuToggleTap.numberOfTapsRequired = 2;
+    menuToggleTap.numberOfTouchesRequired = 3;
+    [self addGestureRecognizer:menuToggleTap];
+
     [[NSNotificationCenter defaultCenter]
         addObserver:self
            selector:@selector(clearAllBoxes)
@@ -284,6 +290,11 @@ struct ESPBoxData {
     if (self.superview) self.frame = self.superview.bounds;
     CGSize s = [self.watermarkLabel sizeThatFits:CGSizeMake(300, 30)];
     self.watermarkLabel.frame = CGRectMake(10, 8, s.width + 4, s.height);
+}
+
+- (void)toggleMenu {
+    if (!self.menuView) return;
+    self.menuView.hidden = !self.menuView.hidden;
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
@@ -1467,16 +1478,22 @@ static BOOL IsPlayerVisible(mach_vm_address_t player, task_t task) {
                 mach_vm_address_t lp_md = Read<mach_vm_address_t>(lp_mv + 0xB0, so2_task);
                 if (lp_md > 0x1000000) cam3D = Read<Vector3>(lp_md + 0x44, so2_task);
             }
+            // Slight head offset: if targeting head (bone index 0), aim a bit higher
+            if (aimbot_bone_index == 0) bonePos.y += 0.12f;
+
             float ddx = bonePos.x - cam3D.x, ddy = bonePos.y - cam3D.y, ddz = bonePos.z - cam3D.z;
             float d3 = sqrtf(ddx*ddx + ddy*ddy + ddz*ddz);
             if (d3 < closestDist) {
                 closestDist = d3;
                 closestPlayer = player;
                 closestBonePos = bonePos;
-                closestBoneScreenPos = WorldToScreen(bonePos, viewMatrix, (int)w, (int)h);
+                closestBoneScreenPos = WorldToScreen(closestBonePos, viewMatrix, (int)w, (int)h);
             }
             continue;
         }
+
+        // If aiming at head, offset slightly upward before projecting to screen
+        if (aimbot_bone_index == 0) bonePos.y += 0.12f;
 
         Vector3 sp = WorldToScreen(bonePos, viewMatrix, (int)w, (int)h);
         if (sp.z <= 0) continue;

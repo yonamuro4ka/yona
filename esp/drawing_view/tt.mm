@@ -385,7 +385,7 @@ extern volatile bool esp_screenshot_safe;
         yOffset += 32;
         _shootingCheckCheckmark = [self addToggle:@(OBF("Fire Check"))     atY:yOffset action:@selector(shootingCheckTapped) enabled:aimbot_shooting_check]; 
         yOffset += 32;
-        _knifeBotCheckmark      = [self addToggle:@(OBF("Knife Bot"))      atY:yOffset action:@selector(knifeBotTapped)      enabled:aimbot_knife_bot];       
+        // Knife Bot removed from menu (feature kept disabled)
         yOffset += 32;
         _aimbotTeamCheckmark = [self addToggle:@(OBF("Team Check")) atY:yOffset action:@selector(aimbotTeamTapped) enabled:aimbot_team_check];
         yOffset += 32;
@@ -730,10 +730,10 @@ static __attribute__((unused)) std::string readUnityString(uintptr_t str_ptr, ta
 
 
 
-- (void)visibleCheckTapped  { aimbot_visible_check  = !aimbot_visible_check;  [self animateCheckmark:_visibleCheckCheckmark  show:aimbot_visible_check];  }
-- (void)shootingCheckTapped { aimbot_shooting_check = !aimbot_shooting_check; [self animateCheckmark:_shootingCheckCheckmark show:aimbot_shooting_check]; }
-- (void)knifeBotTapped      { aimbot_knife_bot      = !aimbot_knife_bot;      [self animateCheckmark:_knifeBotCheckmark      show:aimbot_knife_bot];      }
-- (void)rcsTapped           { }
+ - (void)visibleCheckTapped  { aimbot_visible_check  = !aimbot_visible_check;  [self animateCheckmark:_visibleCheckCheckmark  show:aimbot_visible_check];  }
+ - (void)shootingCheckTapped { aimbot_shooting_check = !aimbot_shooting_check; [self animateCheckmark:_shootingCheckCheckmark show:aimbot_shooting_check]; }
+ - (void)knifeBotTapped      { aimbot_knife_bot = false; }
+ - (void)rcsTapped           { }
 
 
 - (void)aimbotTapped {

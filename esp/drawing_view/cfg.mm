@@ -50,7 +50,7 @@ void cfg_create(NSString *name) {
     dict[@(OBF("aimbot_enabled"))] = @(aimbot_enabled);
     dict[@(OBF("aimbot_visible_check"))] = @(aimbot_visible_check);
     dict[@(OBF("aimbot_shooting_check"))] = @(aimbot_shooting_check);
-    dict[@(OBF("aimbot_knife_bot"))] = @(aimbot_knife_bot);
+    // Knife bot is intentionally not persisted to keep it disabled by default
     dict[@(OBF("aimbot_smooth"))] = @(aimbot_smooth);
     dict[@(OBF("aimbot_trigger_delay"))] = @(aimbot_trigger_delay);
     dict[@(OBF("aimbot_bone_index"))] = @(aimbot_bone_index);
@@ -107,7 +107,8 @@ void cfg_load(NSString *name) {
     if (dict[@(OBF("aimbot_enabled"))]) aimbot_enabled = [dict[@(OBF("aimbot_enabled"))] boolValue];
     if (dict[@(OBF("aimbot_visible_check"))]) aimbot_visible_check = [dict[@(OBF("aimbot_visible_check"))] boolValue];
     if (dict[@(OBF("aimbot_shooting_check"))]) aimbot_shooting_check = [dict[@(OBF("aimbot_shooting_check"))] boolValue];
-    if (dict[@(OBF("aimbot_knife_bot"))]) aimbot_knife_bot = [dict[@(OBF("aimbot_knife_bot"))] boolValue];
+    // Always keep knife bot disabled regardless of saved config
+    aimbot_knife_bot = false;
     if (dict[@(OBF("aimbot_smooth"))]) aimbot_smooth = [dict[@(OBF("aimbot_smooth"))] floatValue];
     if (dict[@(OBF("aimbot_trigger_delay"))]) aimbot_trigger_delay = [dict[@(OBF("aimbot_trigger_delay"))] floatValue];
     if (dict[@(OBF("aimbot_bone_index"))]) aimbot_bone_index = [dict[@(OBF("aimbot_bone_index"))] intValue];
